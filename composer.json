@@ -1,0 +1,39 @@
+{
+    "name": "balfour/laravel-form-builder",
+    "description": "A library for building & rendering forms in Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthew Goslett",
+            "email": "matthew@masterstart.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^5.7",
+        "illuminate/support": "^5.7",
+        "illuminate/validation": "^5.7",
+        "propaganistas/laravel-phone": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Balfour\\LaravelFormBuilder\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Balfour\\LaravelFormBuilder\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
