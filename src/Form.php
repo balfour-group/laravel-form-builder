@@ -14,12 +14,22 @@ class Form
     /**
      * @var string
      */
+    protected $id = null;
+
+    /**
+     * @var string
+     */
     protected $action;
 
     /**
      * @var string
      */
     protected $button = 'Submit';
+
+    /**
+     * @var bool
+     */
+    protected $hasResetButton = false;
 
     /**
      * @var string
@@ -30,6 +40,25 @@ class Form
      * @var array
      */
     protected $components = [];
+
+    /**
+     * @param string $id
+     * @return $this
+     */
+    public function id($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getID()
+    {
+        return $this->id;
+    }
 
     /**
      * @param string $name
@@ -86,6 +115,24 @@ class Form
     public function getButton()
     {
         return $this->button;
+    }
+
+    /**
+     * @return $this
+     */
+    public function showResetButton()
+    {
+        $this->hasResetButton = true;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasResetButton()
+    {
+        return $this->hasResetButton;
     }
 
     /**
@@ -214,8 +261,10 @@ class Form
         }, $this->getVisibleComponents());
 
         return view('form-builder::form', [
+            'id' => $this->getID(),
             'action' => $this->getAction(),
             'button' => $this->getButton(),
+            'hasResetButton' => $this->hasResetButton(),
             'method' => $this->getMethod(),
             'slot' =>  new HtmlString(implode('', $rendered)),
         ])->render();

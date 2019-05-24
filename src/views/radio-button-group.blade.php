@@ -1,16 +1,14 @@
-@php $default = form_input_default_value($name, $default ?? null); @endphp
-
 @isset($label)
-    @label(['required' => $required ?? false])
+    @label(['required' => $required])
         {{ $label }}
     @endlabel
 @endif
 
 <div class="btn-group d-block">
     @foreach ($options as $option)
-        @php $id = form_label_id($name, $option['key'], $option['value']); @endphp
-        <button type="button" class="btn btn-light radio-button-selector {{ $default == $option['key'] ? 'active' : '' }}" {{ isset($disabled) && $disabled === true ? 'disabled' : '' }}>
-            <input type="radio" name="{{ $name }}" id="{{ $id }}" value="{{ $option['key'] }}" style="display: none;" {{ $default == $option['key'] ? 'checked' : '' }}>
+        @php $id = \Balfour\LaravelFormBuilder\FormUtils::generateLabel($name, $option['key'], $option['value']); @endphp
+        <button type="button" class="btn btn-light radio-button-selector {{ $value == $option['key'] ? 'active' : '' }}" {{ $disabled ? 'disabled' : '' }}>
+            <input type="radio" name="{{ $name }}" id="{{ $id }}" value="{{ $option['key'] }}" style="display: none;" {{ $value == $option['key'] ? 'checked' : '' }}>
             @isset($option['icon'])
                 <i class="{{ $option['icon'] }} mr-2"></i>
             @endif

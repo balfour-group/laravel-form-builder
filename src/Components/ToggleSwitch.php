@@ -89,13 +89,22 @@ class ToggleSwitch extends FormControl
     }
 
     /**
+     * @return bool
+     */
+    public function isOn()
+    {
+        return $this->getValue() == '1';
+    }
+
+    /**
      * @return array
      */
     protected function getRenderViewVars()
     {
         return [
-            'on_label' => $this->getOnLabel(),
-            'off_label' => $this->getOffLabel(),
+            'onLabel' => $this->getOnLabel(),
+            'offLabel' => $this->getOffLabel(),
+            'isOn' => $this->isOn(),
         ];
     }
 }

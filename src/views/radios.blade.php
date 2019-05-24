@@ -1,16 +1,14 @@
-@php $default = form_input_default_value($name, $default ?? null); @endphp
-
 @isset($label)
-    @label(['required' => $required ?? false])
+    @label(['required' => $required])
         {{ $label }}
     @endlabel
 @endif
 
-@foreach ($options as $key => $value)
-    @php $id = form_label_id($name, $key, $value); @endphp
-    <div class="form-check {{ isset($inline) && $inline === true ? 'form-check-inline mr-1' : '' }}">
-        <input type="radio" name="{{ $name }}" id="{{ $id }}" class="form-check-input" value="{{ $key }}" {{ isset($disabled) && $disabled === true ? 'disabled' : '' }} {{ $default == $key ? 'checked' : '' }}>
-        <label for="{{ $id }}" class="form-check-label">{{ $value }}</label>
+@foreach ($options as $k => $v)
+    @php $id = \Balfour\LaravelFormBuilder\FormUtils::generateLabel($name, $k, $v); @endphp
+    <div class="form-check {{ $inline ? 'form-check-inline mr-1' : '' }}">
+        <input type="radio" name="{{ $name }}" id="{{ $id }}" class="form-check-input" value="{{ $k }}" {{ $disabled ? 'disabled' : '' }} {{ $value == $k ? 'checked' : '' }}>
+        <label for="{{ $id }}" class="form-check-label">{{ $v }}</label>
     </div>
 @endforeach
 

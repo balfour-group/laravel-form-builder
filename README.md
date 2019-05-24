@@ -384,7 +384,7 @@ use Balfour\LaravelFormBuilder\Components\HiddenInput;
 
 HiddenInput::build()
     ->name('user_id')
-    ->value(1);
+    ->defaults(1);
 ```
 
 ### MobileNumberInput

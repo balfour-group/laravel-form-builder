@@ -19,10 +19,7 @@
     "autoload": {
         "psr-4": {
             "Balfour\\LaravelFormBuilder\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "extra": {
         "laravel": {

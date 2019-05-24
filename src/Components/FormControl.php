@@ -2,6 +2,7 @@
 
 namespace Balfour\LaravelFormBuilder\Components;
 
+use Balfour\LaravelFormBuilder\FormUtils;
 use Illuminate\Support\Str;
 
 abstract class FormControl extends BaseComponent implements FormControlInterface
@@ -150,6 +151,14 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return FormUtils::getValueFromRequest($this->getName(), $this->getDefaultValue());
+    }
+
+    /**
      * @param mixed $rule
      * @return $this
      */
@@ -204,11 +213,12 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     public function render()
     {
         return view($this->view, array_merge($this->getRenderViewVars(), [
+            'id' => FormUtils::generateLabel($this->getName()),
             'label' => $this->getLabel(),
             'name' => $this->getName(),
             'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
             'disabled' => $this->isDisabled(),
+            'value' => $this->getValue(),
         ]))->render();
     }
 

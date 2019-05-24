@@ -15,6 +15,11 @@ class TimePicker extends FormControl
     protected $sibling;
 
     /**
+     * @var string
+     */
+    protected $placeholder;
+
+    /**
      * @param string $sibling
      * @return $this
      */
@@ -34,12 +39,32 @@ class TimePicker extends FormControl
     }
 
     /**
+     * @param string $placeholder
+     * @return $this
+     */
+    public function placeholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceholder()
+    {
+        return $this->placeholder;
+    }
+
+    /**
      * @return array
      */
     protected function getRenderViewVars()
     {
         return [
             'sibling' => $this->getSibling(),
+            'placeholder' => $this->getPlaceholder(),
         ];
     }
 }

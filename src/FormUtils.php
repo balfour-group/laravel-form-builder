@@ -1,11 +1,14 @@
 <?php
 
-if (!function_exists('form_label_id')) {
+namespace Balfour\LaravelFormBuilder;
+
+abstract class FormUtils
+{
     /**
      * @param mixed ...$parts
      * @return string
      */
-    function form_label_id(...$parts)
+    public static function generateLabel(...$parts)
     {
         $parts = array_map(function ($part) {
             return \Illuminate\Support\Str::slug($part, '_');
@@ -13,15 +16,13 @@ if (!function_exists('form_label_id')) {
         $parts[] = \Illuminate\Support\Str::random(5);
         return implode('_', $parts);
     }
-}
 
-if (!function_exists('form_input_default_value')) {
     /**
      * @param string $name
      * @param mixed $default
      * @return mixed
      */
-    function form_input_default_value($name, $default = null)
+    public static function getValueFromRequest($name, $default = null)
     {
         return old(
             $name,

@@ -52,9 +52,14 @@ class Select extends FormControl
      */
     protected function getRenderViewVars()
     {
+        $options = $this->getOptions();
+
+        if ($this->hasEmptyOption()) {
+            $options = ['' => '-'] + $options;
+        }
+
         return [
-            'empty_option' => $this->hasEmptyOption(),
-            'options' => $this->getOptions(),
+            'options' => $options,
         ];
     }
 }

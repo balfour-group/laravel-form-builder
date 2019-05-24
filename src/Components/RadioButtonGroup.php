@@ -14,7 +14,7 @@ class RadioButtonGroup extends FormControl
     /**
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @param array $options

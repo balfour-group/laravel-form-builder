@@ -15,6 +15,11 @@ class TextArea extends FormControl
     protected $rows = 5;
 
     /**
+     * @var string
+     */
+    protected $placeholder;
+
+    /**
      * @param int $rows
      */
     public function rows($rows)
@@ -31,12 +36,32 @@ class TextArea extends FormControl
     }
 
     /**
+     * @param string $placeholder
+     * @return $this
+     */
+    public function placeholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceholder()
+    {
+        return $this->placeholder;
+    }
+
+    /**
      * @return array
      */
     protected function getRenderViewVars()
     {
         return [
             'rows' => $this->getRows(),
+            'placeholder' => $this->getPlaceholder(),
         ];
     }
 }
