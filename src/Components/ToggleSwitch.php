@@ -15,6 +15,37 @@ class ToggleSwitch extends FormControl
     protected $offLabel = 'Off';
 
     /**
+     * @param mixed $default
+     * @return $this
+     */
+    public function defaults($default)
+    {
+        // do some magic to turn truey values into 1 and 0 for the form control
+        if (!is_callable($default)) {
+            if (is_bool($default)) {
+                $default = $default ? '1' : '0';
+            } else {
+                switch (strtolower($default)) {
+                    case 'true':
+                    case 'on':
+                        $default = 1;
+                        break;
+                    case 'false':
+                    case 'off':
+                        $default = 0;
+                        break;
+                    default:
+                        $default = (bool) $default ? '1' : '0';
+                }
+            }
+        }
+
+        $this->default = $default;
+
+        return $this;
+    }
+
+    /**
      * @param string $label
      * @return $this
      */
