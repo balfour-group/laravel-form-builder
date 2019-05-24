@@ -1,15 +1,9 @@
 @php
 $id = form_label_id($name);
 
-$value = isset($value) ? $value : 1;
+$value = $value ?? 1;
 
-$default = old(
-    $name,
-    request(
-        $name,
-        isset($default) ? $default : null
-    )
-);
+$default = form_input_default_value($name, $default ?? null);
 @endphp
 
 <div class="form-check form-check-inline">

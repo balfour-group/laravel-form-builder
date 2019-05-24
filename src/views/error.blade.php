@@ -1,6 +1,4 @@
-@php
-    $key = (string) $slot;
-@endphp
+@php $key = (string) $slot; @endphp
 
 @if ($errors->has($key))
     <div class="invalid-feedback">{{ $errors->first($key) }}</div>

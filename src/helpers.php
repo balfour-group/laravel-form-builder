@@ -14,3 +14,21 @@ if (!function_exists('form_label_id')) {
         return implode('_', $parts);
     }
 }
+
+if (!function_exists('form_input_default_value')) {
+    /**
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    function form_input_default_value($name, $default = null)
+    {
+        return old(
+            $name,
+            request(
+                $name,
+                $default
+            )
+        );
+    }
+}

@@ -1,18 +1,11 @@
-@php
-$default = old(
-    $name,
-    request(
-        $name,
-        isset($default) ? $default : null
-    )
-);
-@endphp
+@php $default = form_input_default_value($name, $default ?? null); @endphp
 
 @isset($label)
-    @label(['required' => isset($required) ? $required : false])
+    @label(['required' => $required ?? false])
         {{ $label }}
     @endlabel
 @endif
+
 <div class="btn-group d-block">
     @foreach ($options as $option)
         @php $id = form_label_id($name, $option['key'], $option['value']); @endphp
@@ -25,6 +18,7 @@ $default = old(
         </button>
     @endforeach
 </div>
+
 @formerror
     {{ $name }}
 @endformerror

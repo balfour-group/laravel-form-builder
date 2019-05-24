@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": ">=7.2.0",
         "illuminate/database": "^5.7",
         "illuminate/support": "^5.7",
         "illuminate/validation": "^5.7",

@@ -1,9 +1,11 @@
-@php $checked = isset($checked) ? $checked : []; @endphp
+@php $checked = $checked ?? []; @endphp
+
 @isset($label)
-    @label(['required' => isset($required) ? $required : false])
+    @label(['required' => $required ?? false])
         {{ $label }}
     @endlabel
 @endif
+
 @foreach ($options as $key => $value)
     @php $id = form_label_id($name, $key, $value); @endphp
     <div class="form-check {{ isset($inline) && $inline === true ? 'form-check-inline mr-1' : '' }}">
@@ -11,6 +13,7 @@
         <label for="{{ $id }}" class="form-check-label">{{ $value }}</label>
     </div>
 @endforeach
+
 @formerror
     {{ $name }}
 @endformerror
