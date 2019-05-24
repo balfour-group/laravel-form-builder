@@ -5,6 +5,11 @@ namespace Balfour\LaravelFormBuilder\Components;
 class RichTextEditor extends FormControl
 {
     /**
+     * @var string
+     */
+    protected $view = 'form-builder::wysiwyg';
+
+    /**
      * @var int
      */
     protected $rows = 5;
@@ -26,18 +31,12 @@ class RichTextEditor extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::wysiwyg', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
+        return [
             'rows' => $this->getRows(),
-            'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
-        ])->render();
+        ];
     }
 }

@@ -5,6 +5,11 @@ namespace Balfour\LaravelFormBuilder\Components;
 class TextArea extends FormControl
 {
     /**
+     * @var string
+     */
+    protected $view = 'form-builder::textarea';
+
+    /**
      * @var int
      */
     protected $rows = 5;
@@ -26,18 +31,12 @@ class TextArea extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::textarea', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
+        return [
             'rows' => $this->getRows(),
-            'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
-        ])->render();
+        ];
     }
 }

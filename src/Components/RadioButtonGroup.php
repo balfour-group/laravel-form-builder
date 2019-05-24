@@ -7,6 +7,11 @@ use Illuminate\Validation\Rule;
 class RadioButtonGroup extends FormControl
 {
     /**
+     * @var string
+     */
+    protected $view = 'form-builder::radio-button-group';
+
+    /**
      * @var array
      */
     protected $options;
@@ -45,18 +50,12 @@ class RadioButtonGroup extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::radio-button-group', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
-            'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
+        return [
             'options' => $this->getOptions(),
-            'disabled' => $this->isDisabled(),
-        ])->render();
+        ];
     }
 }

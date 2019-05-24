@@ -9,6 +9,11 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     /**
      * @var string
      */
+    protected $view;
+
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -190,5 +195,28 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
         $rules = array_merge($rules, $other);
 
         return count($rules) > 0 ? [$this->name => $rules] : null;
+    }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function render()
+    {
+        return view($this->view, array_merge($this->getRenderViewVars(), [
+            'label' => $this->getLabel(),
+            'name' => $this->getName(),
+            'required' => $this->isRequired(),
+            'default' => $this->getDefaultValue(),
+            'disabled' => $this->isDisabled(),
+        ]))->render();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRenderViewVars()
+    {
+        return [];
     }
 }

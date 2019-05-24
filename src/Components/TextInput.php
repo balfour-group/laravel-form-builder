@@ -7,6 +7,11 @@ class TextInput extends FormControl
     /**
      * @var string
      */
+    protected $view = 'form-builder::input';
+
+    /**
+     * @var string
+     */
     protected $type = 'text';
 
     /**
@@ -50,19 +55,13 @@ class TextInput extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::input', [
-            'label' => $this->getLabel(),
+        return [
             'type' => $this->getType(),
-            'name' => $this->getName(),
-            'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
-            'placeholder' => $this->placeholder,
-        ])->render();
+            'placeholder' => $this->getPlaceholder(),
+        ];
     }
 }

@@ -7,6 +7,11 @@ class TimePicker extends FormControl
     /**
      * @var string
      */
+    protected $view = 'form-builder::timepicker';
+
+    /**
+     * @var string
+     */
     protected $sibling;
 
     /**
@@ -29,18 +34,12 @@ class TimePicker extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::timepicker', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
-            'required' => $this->isRequired(),
-            'default' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
+        return [
             'sibling' => $this->getSibling(),
-        ])->render();
+        ];
     }
 }

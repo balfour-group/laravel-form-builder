@@ -9,6 +9,11 @@ class Select extends FormControl
     use ResolvesOptionsTrait;
 
     /**
+     * @var string
+     */
+    protected $view = 'form-builder::select';
+
+    /**
      * @var bool
      */
     protected $emptyOption = false;
@@ -43,19 +48,13 @@ class Select extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::select', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
-            'required' => $this->isRequired(),
+        return [
             'empty_option' => $this->hasEmptyOption(),
             'options' => $this->getOptions(),
-            'default' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
-        ])->render();
+        ];
     }
 }

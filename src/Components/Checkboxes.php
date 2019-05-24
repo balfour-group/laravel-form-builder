@@ -9,6 +9,11 @@ class Checkboxes extends FormControl
     use ResolvesOptionsTrait;
 
     /**
+     * @var string
+     */
+    protected $view = 'form-builder::checkboxes';
+
+    /**
      * @return array
      */
     public function getAutoValidationRules()
@@ -38,18 +43,13 @@ class Checkboxes extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::checkboxes', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
-            'required' => $this->isRequired(),
+        return [
             'options' => $this->getOptions(),
             'checked' => $this->getDefaultValue(),
-            'disabled' => $this->isDisabled(),
-        ])->render();
+        ];
     }
 }

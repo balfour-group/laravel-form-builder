@@ -7,6 +7,11 @@ class ToggleSwitch extends FormControl
     /**
      * @var string
      */
+    protected $view = 'form-builder::switch';
+
+    /**
+     * @var string
+     */
     protected $onLabel = 'On';
 
     /**
@@ -84,18 +89,13 @@ class ToggleSwitch extends FormControl
     }
 
     /**
-     * @return string
-     * @throws \Throwable
+     * @return array
      */
-    public function render()
+    protected function getRenderViewVars()
     {
-        return view('form-builder::switch', [
-            'label' => $this->getLabel(),
-            'name' => $this->getName(),
-            'default' => $this->getDefaultValue(),
+        return [
             'on_label' => $this->getOnLabel(),
             'off_label' => $this->getOffLabel(),
-            'on' => (bool) $this->getDefaultValue(),
-        ])->render();
+        ];
     }
 }
