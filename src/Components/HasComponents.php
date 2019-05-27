@@ -80,4 +80,29 @@ trait HasComponents
 
         return $rules;
     }
+
+    /**
+     * @return string
+     */
+    protected function renderChildComponents()
+    {
+        $rendered = array_map(function (ComponentInterface $component) {
+            if ($this->isRowContainerRequired($component)) {
+                $component = Row::build()->with($component);
+            }
+
+            return $component->render();
+        }, $this->getVisibleComponents());
+        return implode('', $rendered);
+    }
+
+    /**
+     * @param ComponentInterface $component
+     * @return bool
+     */
+    protected function isRowContainerRequired(ComponentInterface $component)
+    {
+        return !$component instanceof HasComponentsInterface
+            && !$component instanceof HiddenInput;
+    }
 }

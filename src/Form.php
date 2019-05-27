@@ -210,33 +210,14 @@ class Form implements HasComponentsInterface
      */
     public function render()
     {
-        // render child components
-        $rendered = array_map(function (ComponentInterface $component) {
-            if ($this->isRowContainerRequired($component)) {
-                $component = Row::build()->with($component);
-            }
-
-            return $component->render();
-        }, $this->getVisibleComponents());
-
         return view('form-builder::form', [
             'id' => $this->getID(),
             'action' => $this->getAction(),
             'button' => $this->getButton(),
             'hasResetButton' => $this->hasResetButton(),
             'method' => $this->getMethod(),
-            'slot' =>  new HtmlString(implode('', $rendered)),
+            'slot' =>  new HtmlString($this->renderChildComponents()),
         ])->render();
-    }
-
-    /**`
-     * @param ComponentInterface $component
-     * @return bool
-     */
-    protected function isRowContainerRequired(ComponentInterface $component)
-    {
-        return !$component instanceof HasComponentsInterface
-            && !$component instanceof HiddenInput;
     }
 
     /**

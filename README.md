@@ -25,6 +25,7 @@ classes to handle the styling of components.
     * [Checkboxes (Multiple)](#checkboxes-multiple)
     * [DateInput](#dateinput)
     * [EmailInput](#emailinput)
+    * [FieldSet](#fieldset)
     * [HiddenInput](#hiddeninput)
     * [MobileNumberInput](#mobilenumberinput)
     * [NumberInput](#numberinput)
@@ -273,6 +274,7 @@ The following components are bundled into this package:
 * [Checkboxes (Multiple)](#checkboxes-multiple)
 * [DateInput](#dateinput)
 * [EmailInput](#emailinput)
+* [FieldSet](#fieldset)
 * [HiddenInput](#hiddeninput)
 * [MobileNumberInput](#mobilenumberinput)
 * [NumberInput](#numberinput)
@@ -375,6 +377,24 @@ EmailInput::build()
 EmailInput::build()
     ->name('email')
     ->rule('unique:users,email');
+```
+
+### FieldSet
+
+```php
+use Balfour\LaravelFormBuilder\Components\DateInput;
+use Balfour\LaravelFormBuilder\Components\FieldSet;
+
+FieldSet::build()
+    ->legend('General')
+    ->with([
+        DateInput::build()
+            ->name('start_date')
+            ->required(),
+        DateInput::build()
+            ->name('end_date')
+            ->required(),
+    ]);
 ```
 
 ### HiddenInput
@@ -492,7 +512,6 @@ Row::build()
             ->name('end_date')
             ->required(),
     ]);
-
 ```
 
 ### Select
