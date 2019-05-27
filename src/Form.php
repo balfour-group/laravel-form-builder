@@ -9,7 +9,9 @@ use Balfour\LaravelFormBuilder\Components\HasComponents;
 use Balfour\LaravelFormBuilder\Components\HiddenInput;
 use Balfour\LaravelFormBuilder\Components\Row;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class Form implements HasComponentsInterface
 {
@@ -188,11 +190,15 @@ class Form implements HasComponentsInterface
 
         foreach ($this->getFormControlComponents() as $component) {
             /** @var FormControlInterface $component */
-            $name = $component->getName();
-
-            if (array_key_exists($name, $values)) {
-                $component->defaults($values[$name]);
+            $key = $component->getName();
+            $key = str_replace(['[]', '[', ']'], ['.*', '.', ''], $key);
+            if (Str::endsWith($key, '.*')) {
+                $key = mb_substr($key, 0, -2);
             }
+
+            $value = Arr::get($values, $key);
+
+            $component->defaults($value);
         }
 
         return $this;
