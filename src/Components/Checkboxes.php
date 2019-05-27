@@ -3,6 +3,7 @@
 namespace Balfour\LaravelFormBuilder\Components;
 
 use Balfour\LaravelFormBuilder\ResolvesOptionsTrait;
+use Illuminate\Support\Str;
 
 class Checkboxes extends FormControl
 {
@@ -19,32 +20,74 @@ class Checkboxes extends FormControl
     protected $inline = false;
 
     /**
+     * @param string $name
+     * @return $this
+     */
+    public function name($name)
+    {
+        if (!Str::endsWith($name, '[]')) {
+            $name .= '[]';
+        }
+
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValidationRules()
+    {
+        if ($this->isDisabled() || !$this->isVisible()) {
+            return [];
+        }
+
+        $child = $this->getValidationKey();
+        $parent = mb_substr($child, 0, -2);
+        return [
+            $parent => $this->getParentValidationRules(),
+            $child => $this->getComponentValidationRules(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getParentValidationRules()
+    {
+        $rules = [];
+
+        if ($this->isRequired()) {
+            $rules[] = 'required';
+        }
+
+        $rules[] = 'array';
+
+        return $rules;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getComponentValidationRules()
+    {
+        $rules = [
+            'required',
+            $this->getOptionValidationRule(),
+        ];
+
+        return array_merge($rules, $this->rules);
+    }
+
+    /**
      * @return array
      */
     public function getAutoValidationRules()
     {
         return [
-            'array',
-        ];
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getValidationRules()
-    {
-        if ($this->isDisabled() || !$this->isVisible()) {
-            return null;
-        }
-
-        $rules = parent::getValidationRules();
-
-        $rules[sprintf('%s.*', $this->getName())] = [
-            'required',
             $this->getOptionValidationRule(),
         ];
-
-        return $rules;
     }
 
     /**

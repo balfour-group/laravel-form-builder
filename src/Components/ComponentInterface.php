@@ -10,7 +10,7 @@ interface ComponentInterface
     public function render();
 
     /**
-     * @return array|null
+     * @return array
      */
     public function getValidationRules();
 

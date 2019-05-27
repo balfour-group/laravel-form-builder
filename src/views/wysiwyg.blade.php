@@ -4,8 +4,8 @@
     @endlabel
 @endif
 
-<textarea name="{{ $name }}" id="{{ $id }}" class="form-control wysiwyg {{ $errors->has($name) ? 'is-invalid' : '' }}" rows="{{ $rows }}" placeholder="{{ $placeholder }}" {{ $disabled ? 'disabled' : '' }}>{{ $value }}</textarea>
+<textarea name="{{ $name }}" id="{{ $id }}" class="form-control wysiwyg {{ $errors->has($errorKey) ? 'is-invalid' : '' }}" rows="{{ $rows }}" placeholder="{{ $placeholder }}" {{ $disabled ? 'disabled' : '' }}>{{ $value }}</textarea>
 
-@formerror
-    {{ $name }}
-@endformerror
+@if ($errors->has($errorKey))
+    <div class="invalid-feedback">{{ $errors->first($errorKey) }}</div>
+@endif

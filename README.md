@@ -184,7 +184,7 @@ class EditUserForm extends Form
                     ->name('roles')
                     ->options(Role::class)
                     ->setVisibility(auth()->user()->can('assign-role'))
-                    ->default(function () use ($user) {
+                    ->defaults(function () use ($user) {
                         return $user->roles
                             ->pluck('id')
                             ->toArray();

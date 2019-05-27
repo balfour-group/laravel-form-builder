@@ -4,13 +4,17 @@ namespace Balfour\LaravelFormBuilder;
 
 use Balfour\LaravelFormBuilder\Components\ComponentInterface;
 use Balfour\LaravelFormBuilder\Components\FormControlInterface;
+use Balfour\LaravelFormBuilder\Components\HasComponentsInterface;
+use Balfour\LaravelFormBuilder\Components\HasComponents;
 use Balfour\LaravelFormBuilder\Components\HiddenInput;
 use Balfour\LaravelFormBuilder\Components\Row;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
-class Form
+class Form implements HasComponentsInterface
 {
+    use HasComponents;
+
     /**
      * @var string
      */
@@ -35,11 +39,6 @@ class Form
      * @var string
      */
     protected $method = 'POST';
-
-    /**
-     * @var array
-     */
-    protected $components = [];
 
     /**
      * @param string $id
@@ -155,70 +154,24 @@ class Form
     }
 
     /**
+     * @param array|null $components
      * @return array
      */
-    public function getComponents()
+    protected function getFormControlComponents($components = null)
     {
-        return $this->components;
-    }
+        $components = $components ?? $this->components;
 
-    /**
-     * @return array
-     */
-    public function getLeafFormControls()
-    {
-        $components = [];
+        $controls = [];
 
-        foreach ($this->components as $component) {
+        foreach ($components as $component) {
             if ($component instanceof FormControlInterface) {
-                $components[] = $component;
-            } elseif ($component instanceof Row) {
-                foreach ($component->getComponents() as $c) {
-                    if ($c instanceof FormControlInterface) {
-                        $components[] = $c;
-                    }
-                }
+                $controls[] = $component;
+            } elseif ($component instanceof HasComponentsInterface) {
+                $controls = array_merge($controls, $this->getFormControlComponents($component));
             }
         }
 
-        return $components;
-    }
-
-    /**
-     * @return array
-     */
-    public function getVisibleComponents()
-    {
-        return array_filter($this->components, function (ComponentInterface $component) {
-            return $component->isVisible();
-        });
-    }
-
-    /**
-     * @param ComponentInterface|array $component
-     * @return $this
-     */
-    public function add($component)
-    {
-        if (is_array($component)) {
-            foreach ($component as $c) {
-                /** @var ComponentInterface $c */
-                $this->add($c);
-            }
-        } else {
-            $this->components[] = $component;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ComponentInterface|array $component
-     * @return $this
-     */
-    public function with($component)
-    {
-        return $this->add($component);
+        return $controls;
     }
 
     /**
@@ -233,7 +186,7 @@ class Form
             $values = (array) $values;
         }
 
-        foreach ($this->getLeafFormControls() as $component) {
+        foreach ($this->getFormControlComponents() as $component) {
             /** @var FormControlInterface $component */
             $name = $component->getName();
 
@@ -270,33 +223,14 @@ class Form
         ])->render();
     }
 
-    /**
+    /**`
      * @param ComponentInterface $component
      * @return bool
      */
     protected function isRowContainerRequired(ComponentInterface $component)
     {
-        return !$component instanceof Row
+        return !$component instanceof HasComponentsInterface
             && !$component instanceof HiddenInput;
-    }
-
-    /**
-     * @return array
-     */
-    public function getValidationRules()
-    {
-        $rules = [];
-
-        foreach ($this->getVisibleComponents() as $component) {
-            /** @var ComponentInterface $component */
-            $r = $component->getValidationRules();
-
-            if ($r) {
-                $rules = array_merge($rules, $r);
-            }
-        }
-
-        return $rules;
     }
 
     /**

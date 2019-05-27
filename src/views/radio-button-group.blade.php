@@ -6,7 +6,7 @@
 
 <div class="btn-group d-block">
     @foreach ($options as $option)
-        @php $id = \Balfour\LaravelFormBuilder\FormUtils::generateLabel($name, $option['key'], $option['value']); @endphp
+        @php $id = \Balfour\LaravelFormBuilder\FormUtils::generateComponentID($name, $option['key'], $option['value']); @endphp
         <button type="button" class="btn btn-light radio-button-selector {{ $value == $option['key'] ? 'active' : '' }}" {{ $disabled ? 'disabled' : '' }}>
             <input type="radio" name="{{ $name }}" id="{{ $id }}" value="{{ $option['key'] }}" style="display: none;" {{ $value == $option['key'] ? 'checked' : '' }}>
             @isset($option['icon'])
@@ -17,6 +17,6 @@
     @endforeach
 </div>
 
-@formerror
-    {{ $name }}
-@endformerror
+@if ($errors->has($errorKey))
+    <div class="invalid-feedback">{{ $errors->first($errorKey) }}</div>
+@endif

@@ -6,3 +6,7 @@
     <input type="checkbox" name="{{ $name }}" value="1" class="switch-input" {{ $isOn ? 'checked' : '' }}>
     <span class="switch-slider" data-checked="{{ $onLabel ?? 'On' }}" data-unchecked="{{ $offLabel ?? 'Off' }}"></span>
 </label>
+
+@if ($errors->has($errorKey))
+    <div class="invalid-feedback">{{ $errors->first($errorKey) }}</div>
+@endif

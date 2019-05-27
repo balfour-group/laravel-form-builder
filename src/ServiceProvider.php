@@ -16,7 +16,6 @@ class ServiceProvider extends BaseServiceProvider
 
         Blade::component('form-builder::checkbox', 'checkbox');
         Blade::component('form-builder::checkboxes', 'checkboxes');
-        Blade::component('form-builder::error', 'formerror');
         Blade::component('form-builder::form', 'form');
         Blade::component('form-builder::hidden', 'hiddeninput');
         Blade::component('form-builder::input', 'input');

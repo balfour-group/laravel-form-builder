@@ -2,56 +2,9 @@
 
 namespace Balfour\LaravelFormBuilder\Components;
 
-class Row extends BaseComponent
+class Row extends BaseComponent implements HasComponentsInterface
 {
-    /**
-     * @var array
-     */
-    protected $components = [];
-
-    /**
-     * @param ComponentInterface|array $component
-     * @return $this
-     */
-    public function with($component)
-    {
-        if (is_array($component)) {
-            foreach ($component as $c) {
-                /** @var ComponentInterface $c */
-                $this->with($c);
-            }
-        } else {
-            $this->components[] = $component;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getComponents()
-    {
-        return $this->components;
-    }
-
-    /**
-     * @return array
-     */
-    public function getVisibleComponents()
-    {
-        return array_filter($this->components, function (ComponentInterface $component) {
-            return $component->isVisible();
-        });
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        return count($this->components) === 0;
-    }
+    use HasComponents;
 
     /**
      * @return string
@@ -92,24 +45,5 @@ class Row extends BaseComponent
             $html .= '</div>';
             return $html;
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getValidationRules()
-    {
-        $rules = [];
-
-        foreach ($this->getVisibleComponents() as $component) {
-            /** @var ComponentInterface $component */
-            $r = $component->getValidationRules();
-
-            if ($r) {
-                $rules = array_merge($rules, $r);
-            }
-        }
-
-        return $rules;
     }
 }

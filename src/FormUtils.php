@@ -8,7 +8,7 @@ abstract class FormUtils
      * @param mixed ...$parts
      * @return string
      */
-    public static function generateLabel(...$parts)
+    public static function generateComponentID(...$parts)
     {
         $parts = array_map(function ($part) {
             return \Illuminate\Support\Str::slug($part, '_');
@@ -24,6 +24,8 @@ abstract class FormUtils
      */
     public static function getValueFromRequest($name, $default = null)
     {
+        $name = str_replace(['[]', '[', ']'], ['', '.', ''], $name);
+
         return old(
             $name,
             request(

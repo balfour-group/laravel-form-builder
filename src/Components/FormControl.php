@@ -83,7 +83,18 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
             return $this->label;
         } else {
             // generate label from name
-            $label = $this->name;
+            $label = $this->getName();
+
+            if (preg_match('/^(.+)\[\]$/', $label, $parts)) {
+                // person[] -> Person
+                $label = $parts[1];
+            } elseif (preg_match('/^(.+)\[(.+)\]$/', $label, $parts)) {
+                // photos[profile] -> Profile
+                // person[][email] -> Email
+                // person[foo][email] -> Email
+                $label = $parts[1];
+            }
+
             if (Str::endsWith($label, '_id')) {
                 $label = mb_substr($label, 0, -3);
             }
@@ -159,14 +170,55 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
+     * @return string
+     */
+    public function getErrorKey()
+    {
+        return $this->getValidationKey();
+    }
+
+    /**
      * @param mixed $rule
      * @return $this
      */
     public function rule($rule)
     {
-        $this->rules[] = $rule;
+        if (is_array($rule)) {
+            foreach ($rule as $r) {
+                $this->rules[] = $r;
+            }
+        } else {
+            $this->rules[] = $rule;
+        }
 
         return $this;
+    }
+
+    /**
+     * @param array $rules
+     * @return $this
+     */
+    public function rules(array $rules)
+    {
+        return $this->rule($rules);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getValidationKey()
+    {
+        $name = $this->getName();
+
+        // handle array syntax
+        // person[] -> person.*
+        // person[first_name] => person.first_name
+        // person[][first_name] = person.*.first_name
+        // person[][roles][] = person.*.roles.*
+
+        $name = str_replace(['[]', '[', ']'], ['.*', '.', ''], $name);
+
+        return $name;
     }
 
     /**
@@ -178,12 +230,12 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     public function getValidationRules()
     {
         if ($this->isDisabled() || !$this->isVisible()) {
-            return null;
+            return [];
         }
 
         $rules = [];
@@ -203,7 +255,7 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
 
         $rules = array_merge($rules, $other);
 
-        return count($rules) > 0 ? [$this->name => $rules] : null;
+        return count($rules) > 0 ? [$this->getValidationKey() => $rules] : [];
     }
 
     /**
@@ -213,12 +265,13 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     public function render()
     {
         return view($this->view, array_merge($this->getRenderViewVars(), [
-            'id' => FormUtils::generateLabel($this->getName()),
+            'id' => FormUtils::generateComponentID($this->getName()),
             'label' => $this->getLabel(),
             'name' => $this->getName(),
             'required' => $this->isRequired(),
             'disabled' => $this->isDisabled(),
             'value' => $this->getValue(),
+            'errorKey' => $this->getErrorKey(),
         ]))->render();
     }
 
