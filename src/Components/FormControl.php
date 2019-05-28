@@ -4,6 +4,7 @@ namespace Balfour\LaravelFormBuilder\Components;
 
 use Balfour\LaravelFormBuilder\FormUtils;
 use Illuminate\Support\Str;
+use Illuminate\Support\ViewErrorBag;
 
 abstract class FormControl extends BaseComponent implements FormControlInterface
 {
@@ -170,14 +171,6 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
-     * @return string
-     */
-    public function getErrorKey()
-    {
-        return $this->getValidationKey();
-    }
-
-    /**
      * @param mixed $rule
      * @return $this
      */
@@ -321,6 +314,44 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
+     * @return ViewErrorBag
+     */
+    protected function getErrorBag()
+    {
+        $errors = session()->get('errors', app(ViewErrorBag::class));
+        /** @var ViewErrorBag $bag */
+        return $errors;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getError()
+    {
+        $errors = $this->getErrorBag();
+
+        if ($this->isArrayComponent() && $errors->has($this->getParentValidationKey())) {
+            return $errors->first($this->getParentValidationKey());
+        } else {
+            return $errors->first($this->getValidationKey());
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasErrors()
+    {
+        $errors = $this->getErrorBag();
+
+        if ($this->isArrayComponent() && $errors->has($this->getParentValidationKey())) {
+            return true;
+        } else {
+            return $errors->has($this->getValidationKey());
+        }
+    }
+
+    /**
      * @return string
      * @throws \Throwable
      */
@@ -333,7 +364,8 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
             'required' => $this->isRequired(),
             'disabled' => $this->isDisabled(),
             'value' => $this->getValue(),
-            'errorKey' => $this->getErrorKey(),
+            'hasErrors' => $this->hasErrors(),
+            'error' => $this->getError(),
         ]))->render();
     }
 

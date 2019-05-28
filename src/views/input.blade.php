@@ -4,8 +4,8 @@
     @endlabel
 @endif
 
-<input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}" class="form-control {{ $errors->has($errorKey) ? 'is-invalid' : '' }}" value="{{ $value }}" placeholder="{{ $placeholder }}" {{ $disabled ? 'disabled' : '' }}>
+<input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}" class="form-control {{ $hasErrors ? 'is-invalid' : '' }}" value="{{ $value }}" placeholder="{{ $placeholder }}" {{ $disabled ? 'disabled' : '' }}>
 
-@if ($errors->has($errorKey))
-    <div class="invalid-feedback">{{ $errors->first($errorKey) }}</div>
+@if ($hasErrors)
+    <div class="invalid-feedback">{{ $error }}</div>
 @endif

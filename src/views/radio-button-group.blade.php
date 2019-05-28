@@ -17,6 +17,6 @@
     @endforeach
 </div>
 
-@if ($errors->has($errorKey))
-    <div class="invalid-feedback">{{ $errors->first($errorKey) }}</div>
+@if ($hasErrors)
+    <div class="invalid-feedback">{{ $error }}</div>
 @endif
