@@ -37,52 +37,6 @@ class Checkboxes extends FormControl
     /**
      * @return array
      */
-    public function getValidationRules()
-    {
-        if ($this->isDisabled() || !$this->isVisible()) {
-            return [];
-        }
-
-        $child = $this->getValidationKey();
-        $parent = mb_substr($child, 0, -2);
-        return [
-            $parent => $this->getParentValidationRules(),
-            $child => $this->getComponentValidationRules(),
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getParentValidationRules()
-    {
-        $rules = [];
-
-        if ($this->isRequired()) {
-            $rules[] = 'required';
-        }
-
-        $rules[] = 'array';
-
-        return $rules;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getComponentValidationRules()
-    {
-        $rules = [
-            'required',
-            $this->getOptionValidationRule(),
-        ];
-
-        return array_merge($rules, $this->rules);
-    }
-
-    /**
-     * @return array
-     */
     public function getAutoValidationRules()
     {
         return [

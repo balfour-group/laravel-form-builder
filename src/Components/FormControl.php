@@ -222,6 +222,27 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
+     * @return string|null
+     */
+    protected function getParentValidationKey()
+    {
+        // person.* -> person
+        // person.first_name => null
+        // person.*.first_name => null
+        // person.*.roles.* => person.*.roles
+
+        return $this->isArrayComponent() ? mb_substr($this->getValidationKey(), 0, -2) : null;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isArrayComponent()
+    {
+        return Str::endsWith($this->getValidationKey(), '.*');
+    }
+
+    /**
      * @return array
      */
     public function getAutoValidationRules()
@@ -232,9 +253,25 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     /**
      * @return array
      */
+    public function getParentAutoValidationRules()
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
     public function getValidationRules()
     {
-        if ($this->isDisabled() || !$this->isVisible()) {
+        return $this->buildParentValidationRules() + $this->buildComponentValidationRules();
+    }
+
+    /**
+     * @return array
+     */
+    protected function buildParentValidationRules()
+    {
+        if (!$this->isArrayComponent() || $this->isDisabled() || !$this->isVisible()) {
             return [];
         }
 
@@ -244,12 +281,37 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
             $rules[] = 'required';
         }
 
+        $rules[] = 'array';
+
+        $rules = array_merge($rules, $this->getParentAutoValidationRules());
+
+        return count($rules) > 0 ? [$this->getParentValidationKey() => $rules] : [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function buildComponentValidationRules()
+    {
+        if ($this->isDisabled() || !$this->isVisible()) {
+            return [];
+        }
+
+        $rules = [];
+
+        $isArrayComponent = $this->isArrayComponent();
+        $isRequired = $this->isRequired() || $isArrayComponent;
+
+        if ($isRequired) {
+            $rules[] = 'required';
+        }
+
         $other = array_merge(
             $this->getAutoValidationRules(),
             $this->rules
         );
 
-        if (!$this->isRequired() && count($other) > 0) {
+        if (!$isRequired && count($other) > 0) {
             $rules[] = 'nullable';
         }
 
