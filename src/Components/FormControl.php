@@ -93,7 +93,7 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
                 // photos[profile] -> Profile
                 // person[][email] -> Email
                 // person[foo][email] -> Email
-                $label = $parts[1];
+                $label = $parts[2];
             }
 
             if (Str::endsWith($label, '_id')) {
