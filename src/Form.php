@@ -166,7 +166,7 @@ class Form implements HasComponentsInterface
             if ($component instanceof FormControlInterface) {
                 $controls[] = $component;
             } elseif ($component instanceof HasComponentsInterface) {
-                $controls = array_merge($controls, $this->getFormControlComponents($component));
+                $controls = array_merge($controls, $this->getFormControlComponents($component->getComponents()));
             }
         }
 
