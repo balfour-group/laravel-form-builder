@@ -7,7 +7,7 @@
 <div class="btn-group d-block">
     @foreach ($options as $option)
         @php $id = \Balfour\LaravelFormBuilder\FormUtils::generateComponentID($name, $option['key'], $option['value']); @endphp
-        <button type="button" class="btn btn-light radio-button-selector {{ $value == $option['key'] ? 'active' : '' }}" {{ $disabled ? 'disabled' : '' }}>
+        <button type="button" class="btn btn-light radio-button-selector {{ implode(' ', $classes) }} {{ $value == $option['key'] ? 'active' : '' }}" {{ $disabled ? 'disabled' : '' }}>
             <input type="radio" name="{{ $name }}" id="{{ $id }}" value="{{ $option['key'] }}" style="display: none;" {{ $value == $option['key'] ? 'checked' : '' }}>
             @isset($option['icon'])
                 <i class="{{ $option['icon'] }} mr-2"></i>

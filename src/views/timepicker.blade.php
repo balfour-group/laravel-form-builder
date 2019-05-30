@@ -4,7 +4,7 @@
     @endlabel
 @endif
 
-<input type="text" name="{{ $name }}" id="{{ $id }}" class="form-control time-picker {{ $hasErrors ? 'is-invalid' : '' }}" value="{{ $value }}" placeholder="{{ $placeholder }}" data-sibling="{{ $sibling }}" {{ $disabled ? 'disabled' : '' }}>
+<input type="text" name="{{ $name }}" id="{{ $id }}" class="form-control time-picker {{ implode(' ', $classes) }} {{ $hasErrors ? 'is-invalid' : '' }}" value="{{ $value }}" placeholder="{{ $placeholder }}" data-sibling="{{ $sibling }}" {{ $disabled ? 'disabled' : '' }}>
 
 @if ($hasErrors)
     <div class="invalid-feedback">{{ $error }}</div>

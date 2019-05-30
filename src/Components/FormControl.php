@@ -49,6 +49,11 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     protected $value;
 
     /**
+     * @var array
+     */
+    protected $classes = [];
+
+    /**
      * @param string $name
      * @return $this
      */
@@ -176,6 +181,33 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
         $this->value = $value;
 
         return $this;
+    }
+
+    /**
+     * @param string|array $classes
+     * @return $this
+     */
+    public function classes($classes)
+    {
+        if (!is_array($classes)) {
+            $classes = (array) $classes;
+        }
+
+        foreach ($classes as $class) {
+            if (!in_array($class, $this->classes)) {
+                $this->classes[] = $class;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getClasses()
+    {
+        return $this->classes;
     }
 
     /**
@@ -382,6 +414,7 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
             'required' => $this->isRequired(),
             'disabled' => $this->isDisabled(),
             'value' => $this->getValue(),
+            'classes' => $this->getClasses(),
             'hasErrors' => $this->hasErrors(),
             'error' => $this->getError(),
         ]))->render();
