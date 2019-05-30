@@ -180,7 +180,7 @@ class Form implements HasComponentsInterface
     public function fill($values)
     {
         if ($values instanceof Model) {
-            $values = $values->getAttributes();
+            $values = $values->toArray();
         } elseif (!is_array($values)) {
             $values = (array) $values;
         }
