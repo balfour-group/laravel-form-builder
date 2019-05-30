@@ -44,6 +44,11 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     protected $rules = [];
 
     /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
      * @param string $name
      * @return $this
      */
@@ -163,11 +168,24 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     }
 
     /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function value($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getValue()
     {
-        return FormUtils::getValueFromRequest($this->getName(), $this->getDefaultValue());
+        return $this->value !== null ?
+            $this->value :
+            FormUtils::getValueFromRequest($this->getName(), $this->getDefaultValue());
     }
 
     /**

@@ -21,7 +21,6 @@ interface HasComponentsInterface
      */
     public function getComponents();
 
-
     /**
      * @return array
      */

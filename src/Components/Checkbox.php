@@ -10,30 +10,6 @@ class Checkbox extends FormControl
     protected $view = 'form-builder::checkbox';
 
     /**
-     * @var mixed
-     */
-    protected $value = '1';
-
-    /**
-     * @param mixed $value
-     * @return $this
-     */
-    public function value($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * @return bool
      */
     public function isChecked()
@@ -47,7 +23,6 @@ class Checkbox extends FormControl
     protected function getRenderViewVars()
     {
         return [
-            'value' => $this->getValue(),
             'isChecked' => $this->isChecked(),
         ];
     }
