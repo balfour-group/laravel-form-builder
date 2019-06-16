@@ -193,9 +193,9 @@ class Form implements HasComponentsInterface
                 $key = mb_substr($key, 0, -2);
             }
 
-            $value = Arr::get($values, $key);
-
-            $component->defaults($value);
+            if (array_key_exists($key, $values)) {
+                $component->defaults($values[$key]);
+            }
         }
 
         return $this;
