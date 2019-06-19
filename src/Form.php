@@ -40,6 +40,11 @@ class Form implements HasComponentsInterface
     protected $method = 'POST';
 
     /**
+     * @var array
+     */
+    protected $classes = [];
+
+    /**
      * @param string $id
      * @return $this
      */
@@ -94,6 +99,33 @@ class Form implements HasComponentsInterface
     public function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * @param string|array $classes
+     * @return $this
+     */
+    public function classes($classes)
+    {
+        if (!is_array($classes)) {
+            $classes = (array) $classes;
+        }
+
+        foreach ($classes as $class) {
+            if (!in_array($class, $this->classes)) {
+                $this->classes[] = $class;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getClasses()
+    {
+        return $this->classes;
     }
 
     /**
@@ -210,6 +242,7 @@ class Form implements HasComponentsInterface
         return view('form-builder::form', [
             'id' => $this->getID(),
             'action' => $this->getAction(),
+            'classes' => $this->getClasses(),
             'button' => $this->getButton(),
             'hasResetButton' => $this->hasResetButton(),
             'method' => $this->getMethod(),
