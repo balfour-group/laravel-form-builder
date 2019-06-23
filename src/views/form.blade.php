@@ -1,4 +1,4 @@
-<form method="{{ $method }}" action="{{ $action }}" enctype="{{ $enctype }}" class="{{ implode(' ', $classes) }}" {!! isset($id) ? sprintf('id="%s"', e($id)) : '' !!}>
+<form method="{{ $method }}" action="{{ $action }}" enctype="{{ $enctype ?? 'application/x-www-form-urlencoded' }}" class="{{ implode(' ', $classes) }}" {!! isset($id) ? sprintf('id="%s"', e($id)) : '' !!}>
     @csrf
     {{ $slot }}
     <div class="form-group">
