@@ -7,6 +7,12 @@
     <span class="switch-slider {{ implode(' ', $classes) }}" data-checked="{{ $onLabel ?? 'On' }}" data-unchecked="{{ $offLabel ?? 'Off' }}"></span>
 </label>
 
+@isset($helpText)
+    @helptext
+        {{ $helpText }}
+    @endlabel
+@endif
+
 @if ($hasErrors)
     <div class="invalid-feedback">{{ $error }}</div>
 @endif

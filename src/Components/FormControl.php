@@ -54,6 +54,11 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     protected $classes = [];
 
     /**
+     * @var string|null
+     */
+    protected $helpText = null;
+
+    /**
      * @param string $name
      * @return $this
      */
@@ -208,6 +213,25 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
     public function getClasses()
     {
         return $this->classes;
+    }
+
+    /**
+     * @param string $text
+     * @return $this
+     */
+    public function helpText($text)
+    {
+        $this->helpText = $text;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHelpText()
+    {
+        return $this->helpText;
     }
 
     /**
@@ -417,6 +441,7 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
             'classes' => $this->getClasses(),
             'hasErrors' => $this->hasErrors(),
             'error' => $this->getError(),
+            'helpText' => $this->getHelpText(),
         ]))->render();
     }
 

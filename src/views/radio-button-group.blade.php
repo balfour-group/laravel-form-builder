@@ -17,6 +17,12 @@
     @endforeach
 </div>
 
+@isset($helpText)
+    @helptext
+        {{ $helpText }}
+    @endlabel
+@endif
+
 @if ($hasErrors)
     <div class="invalid-feedback">{{ $error }}</div>
 @endif

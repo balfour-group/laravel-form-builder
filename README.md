@@ -26,6 +26,7 @@ classes to handle the styling of components.
     * [DateInput](#dateinput)
     * [EmailInput](#emailinput)
     * [FieldSet](#fieldset)
+    * [FileInput](#fileinput)
     * [HiddenInput](#hiddeninput)
     * [MobileNumberInput](#mobilenumberinput)
     * [NumberInput](#numberinput)
@@ -275,6 +276,7 @@ The following components are bundled into this package:
 * [DateInput](#dateinput)
 * [EmailInput](#emailinput)
 * [FieldSet](#fieldset)
+* [FileInput](#fileinput)
 * [HiddenInput](#hiddeninput)
 * [MobileNumberInput](#mobilenumberinput)
 * [NumberInput](#numberinput)
@@ -395,6 +397,18 @@ FieldSet::build()
             ->name('end_date')
             ->required(),
     ]);
+```
+
+### FileInput
+
+```php
+use Balfour\LaravelFormBuilder\Components\FileInput;
+
+FileInput::build()
+    ->name('photo')
+    ->required()
+    ->mimes(['image/jpeg'])
+    ->maxSize('5120')
 ```
 
 ### HiddenInput
