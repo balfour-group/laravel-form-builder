@@ -2,6 +2,7 @@
 
 namespace Balfour\LaravelFormBuilder;
 
+use Balfour\LaravelFormBuilder\Components\FileInput;
 use Balfour\LaravelFormBuilder\Components\FormControlInterface;
 use Balfour\LaravelFormBuilder\Components\HasComponentsInterface;
 use Balfour\LaravelFormBuilder\Components\HasComponents;
@@ -235,11 +236,24 @@ class Form implements HasComponentsInterface
 
     /**
      * @return string
+     */
+    protected function getEncodingType()
+    {
+        $components = collect($this->getFormControlComponents())->filter(function (FormControlInterface $component) {
+            return $component instanceof FileInput;
+        });
+
+        return count($components) > 0 ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+    }
+
+    /**
+     * @return string
      * @throws \Throwable
      */
     public function render()
     {
         return view('form-builder::form', [
+            'enctype' => $this->getEncodingType(),
             'id' => $this->getID(),
             'action' => $this->getAction(),
             'classes' => $this->getClasses(),
