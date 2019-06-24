@@ -21,10 +21,13 @@ class RichTextEditor extends FormControl
 
     /**
      * @param int $rows
+     * @return $this
      */
     public function rows($rows)
     {
         $this->rows = $rows;
+
+        return $this;
     }
 
     /**
