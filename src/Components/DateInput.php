@@ -45,7 +45,7 @@ class DateInput extends TextInput
     public function getAutoValidationRules()
     {
         return [
-            'date',
+            'date_format:Y-m-d',
         ];
     }
 }
