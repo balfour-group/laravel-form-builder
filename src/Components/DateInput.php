@@ -26,7 +26,7 @@ class DateInput extends TextInput
         if (!is_callable($default)) {
             if ($default instanceof CarbonInterface) {
                 $default = $default->toDateString();
-            } else {
+            } elseif (is_string($default)) {
                 // laravel casts 'date' attributes to date time in the format "YYYY-MM-DD H:i:s"
                 // the date input expects "YYYY-MM-DD", so we re-format here
                 $date = Carbon::parse($default);
