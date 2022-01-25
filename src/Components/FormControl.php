@@ -174,7 +174,7 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
      */
     public function getDefaultValue()
     {
-        return is_callable($this->default) ?  call_user_func($this->default) : $this->default;
+        return $this->default;
     }
 
     /**
