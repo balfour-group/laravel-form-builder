@@ -3,6 +3,7 @@
 namespace Balfour\LaravelFormBuilder\Components;
 
 use Balfour\LaravelFormBuilder\FormUtils;
+use ErrorException;
 use Illuminate\Support\Str;
 use Illuminate\Support\ViewErrorBag;
 
@@ -174,7 +175,12 @@ abstract class FormControl extends BaseComponent implements FormControlInterface
      */
     public function getDefaultValue()
     {
-        return is_callable($this->default) ?  call_user_func($this->default) : $this->default;
+        try {
+            $return = is_callable($this->default) ? call_user_func($this->default) : $this->default;
+        } catch (ErrorException $e) {
+            $return = $this->default;
+        }
+        return $return;
     }
 
     /**
