@@ -78,11 +78,11 @@ class Select extends FormControl
     {
         $options = [];
         if ($this->hasEmptyOption()) {
-            $options = ['' => '-'];
+            $options += ['' => '-'];
         }
 
         if ($this->hasNullOption()) {
-            $options = ['null' => 'None'];
+            $options += ['null' => 'None'];
         }
 
         $options += $this->getOptions();
