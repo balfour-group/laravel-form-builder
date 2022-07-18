@@ -19,6 +19,11 @@ class Select extends FormControl
     protected $emptyOption = false;
 
     /**
+     * @var bool
+     */
+    protected $nullOption = false;
+
+    /**
      * @param bool $emptyOption
      * @return $this
      */
@@ -32,9 +37,28 @@ class Select extends FormControl
     /**
      * @return bool
      */
-    public function hasEmptyOption()
+    public function hasEmptyOption(): bool
     {
         return $this->emptyOption;
+    }
+
+    /**
+     * @param bool $nullOption
+     * @return $this
+     */
+    public function nullOption($nullOption = true)
+    {
+        $this->nullOption = $nullOption;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasNullOption(): bool
+    {
+        return $this->nullOption;
     }
 
     /**
@@ -52,11 +76,16 @@ class Select extends FormControl
      */
     protected function getRenderViewVars()
     {
-        $options = $this->getOptions();
-
+        $options = [];
         if ($this->hasEmptyOption()) {
-            $options = ['' => '-'] + $options;
+            $options += ['' => '-'];
         }
+
+        if ($this->hasNullOption()) {
+            $options += ['null' => 'None'];
+        }
+
+        $options += $this->getOptions();
 
         return [
             'options' => $options,
